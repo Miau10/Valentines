@@ -239,7 +239,7 @@
         
         <div class="response" id="response">
             <div class="smiley">😊</div>
-            <h2>Yay! You made my day!</h2>
+            <h2>Opaaaaa</h2>
             <div class="response-text">Oke, see you soon at HAM airport, thanku MY LOVE</div>
         </div>
         
@@ -296,7 +296,50 @@
         });
         
         // No button click handler
-        noButton.addEventListener('click', function() {
+noButton.addEventListener('click', function() {
+    // 1. ESTO SE QUEDA (Maneja los tamaños)
+    const currentYesSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
+    const currentNoSize = parseFloat(window.getComputedStyle(noButton).fontSize);
+    
+    const newYesSize = currentYesSize * 1.2;
+    yesButton.style.fontSize = newYesSize + 'px';
+    
+    const currentYesPadding = parseFloat(window.getComputedStyle(yesButton).padding);
+    yesButton.style.padding = (currentYesPadding * 1.2) + 'px ' + (currentYesPadding * 1.5) + 'px';
+    
+    const newNoSize = currentNoSize * 0.8;
+    noButton.style.fontSize = newNoSize + 'px';
+    
+    const currentNoPadding = parseFloat(window.getComputedStyle(noButton).padding);
+    noButton.style.padding = (currentNoPadding * 0.8) + 'px ' + (currentNoPadding * 1) + 'px';
+    
+    buttonsContainer.style.gap = '40px';
+    
+    yesButton.style.animation = 'shake 0.5s';
+    setTimeout(() => {
+        yesButton.style.animation = '';
+    }, 500);
+    
+    const noTexts = ["u sure?", "Try again", "mmmm nah", "Please?", "come on", "Click yes coño"];
+    const randomText = noTexts[Math.floor(Math.random() * noTexts.length)];
+    noButton.textContent = randomText;
+
+    // 2. ESTO ES LO QUE CAMBIAMOS PARA SAFARI (El movimiento)
+    if (window.innerWidth < 768) {
+        // Usamos la pantalla completa para el área de movimiento
+        const maxX = window.innerWidth - noButton.offsetWidth;
+        const maxY = window.innerHeight - noButton.offsetHeight;
+        
+        const randomX = Math.max(10, Math.random() * (maxX - 20));
+        const randomY = Math.max(10, Math.random() * (maxY - 20));
+        
+        // Importante: 'fixed' y 'zIndex' para que no desaparezca en iPhone
+        noButton.style.position = 'fixed';
+        noButton.style.zIndex = '1000'; 
+        noButton.style.left = randomX + 'px';
+        noButton.style.top = randomY + 'px';
+    }
+});
             // Get current sizes
             const currentYesSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
             const currentNoSize = parseFloat(window.getComputedStyle(noButton).fontSize);
@@ -359,3 +402,4 @@
     </script>
 </body>
 </html>
+
