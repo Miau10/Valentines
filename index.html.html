@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For the LOML</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #ffcce6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            border: 8px solid #ff66b2;
+        }
+        
+        h1 {
+            color: #ff3399;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question {
+            color: #cc0066;
+            font-size: 1.8rem;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+            transition: all 0.5s ease;
+        }
+        
+        .btn {
+            padding: 20px 40px;
+            font-size: 1.8rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            min-width: 180px;
+        }
+        
+        .btn-yes {
+            background-color: #4CAF50;
+            color: white;
+            transform: scale(1);
+        }
+        
+        .btn-yes:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+        
+        .btn-no {
+            background-color: #ff3333;
+            color: white;
+            transform: scale(1);
+        }
+        
+        .btn-no:hover {
+            background-color: #e60000;
+        }
+        
+        .response {
+            margin-top: 40px;
+            padding: 30px;
+            background-color: #ffe6f2;
+            border-radius: 15px;
+            display: none;
+            animation: fadeIn 1s ease;
+        }
+        
+        .response h2 {
+            color: #ff3399;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+        
+        .smiley {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite alternate;
+        }
+        
+        .response-text {
+            font-size: 1.8rem;
+            color: #cc0066;
+            line-height: 1.5;
+        }
+        
+        .hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .heart {
+            position: absolute;
+            color: rgba(255, 102, 178, 0.6);
+            font-size: 20px;
+            animation: float 6s linear infinite;
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            color: #99004d;
+            font-size: 1rem;
+            font-style: italic;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-20px); }
+        }
+        
+        /* Responsive design for iPhone */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .question {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 18px 35px;
+                font-size: 1.5rem;
+                min-width: 150px;
+            }
+            
+            .response h2 {
+                font-size: 1.8rem;
+            }
+            
+            .response-text {
+                font-size: 1.5rem;
+            }
+            
+            .container {
+                padding: 20px;
+                border-width: 5px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .question {
+                font-size: 1.3rem;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 250px;
+                padding: 15px 30px;
+            }
+            
+            .response h2 {
+                font-size: 1.6rem;
+            }
+            
+            .response-text {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>I love you so much Emilia</h1>
+        
+        <div class="question">Will you be my valentine?</div>
+        
+        <div class="buttons-container" id="buttonsContainer">
+            <button class="btn btn-yes" id="yesButton">YES</button>
+            <button class="btn btn-no" id="noButton">NO</button>
+        </div>
+        
+        <div class="response" id="response">
+            <div class="smiley">😊</div>
+            <h2>Yay! You made my day!</h2>
+            <div class="response-text">Oke, see you soon at HAM airport, thanku MY LOVE</div>
+        </div>
+        
+        <div class="instructions">(Try clicking the NO button to see what happens!)</div>
+        
+        <!-- Floating hearts background -->
+        <div class="hearts" id="heartsContainer"></div>
+    </div>
+
+    <script>
+        // DOM elements
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const response = document.getElementById('response');
+        const buttonsContainer = document.getElementById('buttonsContainer');
+        const heartsContainer = document.getElementById('heartsContainer');
+        
+        // Create floating hearts
+        function createHearts() {
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.opacity = Math.random() * 0.5 + 0.3;
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        // Initialize hearts
+        createHearts();
+        
+        // Yes button click handler
+        yesButton.addEventListener('click', function() {
+            response.style.display = 'block';
+            yesButton.style.display = 'none';
+            noButton.style.display = 'none';
+            
+            // Create additional hearts for celebration
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    heart.style.fontSize = (Math.random() * 25 + 20) + 'px';
+                    heart.style.opacity = Math.random() * 0.7 + 0.3;
+                    heartsContainer.appendChild(heart);
+                }, i * 100);
+            }
+        });
+        
+        // No button click handler
+        noButton.addEventListener('click', function() {
+            // Get current sizes
+            const currentYesSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
+            const currentNoSize = parseFloat(window.getComputedStyle(noButton).fontSize);
+            
+            // Make Yes button bigger (increase by 20%)
+            const newYesSize = currentYesSize * 1.2;
+            yesButton.style.fontSize = newYesSize + 'px';
+            
+            // Make Yes button container bigger too
+            const currentYesPadding = parseFloat(window.getComputedStyle(yesButton).padding);
+            yesButton.style.padding = (currentYesPadding * 1.2) + 'px ' + (currentYesPadding * 1.5) + 'px';
+            
+            // Make No button smaller (decrease by 20%)
+            const newNoSize = currentNoSize * 0.8;
+            noButton.style.fontSize = newNoSize + 'px';
+            
+            // Make No button container smaller too
+            const currentNoPadding = parseFloat(window.getComputedStyle(noButton).padding);
+            noButton.style.padding = (currentNoPadding * 0.8) + 'px ' + (currentNoPadding * 1) + 'px';
+            
+            // Move buttons slightly to adjust for size changes
+            buttonsContainer.style.gap = '40px';
+            
+            // Add shake animation to yes button
+            yesButton.style.animation = 'shake 0.5s';
+            setTimeout(() => {
+                yesButton.style.animation = '';
+            }, 500);
+            
+            // Change no button text randomly
+            const noTexts = ["u sure?", "Try again", "mmmm nah", "Please?", "come on", "Click yes coño"];
+            const randomText = noTexts[Math.floor(Math.random() * noTexts.length)];
+            noButton.textContent = randomText;
+            
+            // Move no button to random position to make it harder to click
+            const maxX = window.innerWidth - noButton.offsetWidth;
+            const maxY = window.innerHeight - noButton.offsetHeight;
+            
+            // Only move on mobile or if screen is small enough
+            if (window.innerWidth < 768) {
+                const randomX = Math.random() * maxX;
+                const randomY = Math.random() * maxY;
+                noButton.style.position = 'absolute';
+                noButton.style.left = randomX + 'px';
+                noButton.style.top = randomY + 'px';
+            }
+        });
+        
+        // Add keyframe for shake animation
+        const styleSheet = document.styleSheets[0];
+        styleSheet.insertRule(`
+            @keyframes shake {
+                0% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                50% { transform: translateX(10px); }
+                75% { transform: translateX(-10px); }
+                100% { transform: translateX(0); }
+            }
+        `, styleSheet.cssRules.length);
+    </script>
+</body>
+</html>
