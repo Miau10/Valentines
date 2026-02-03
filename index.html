@@ -1,38 +1,49 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Para Emilia</title>
+    <title>For Emilia</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+        }
+        
         body {
             background-color: #ffcce6;
-            font-family: sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
+            min-height: 100vh;
             text-align: center;
+            overflow: hidden;
+            touch-action: manipulation; /* Optimiza toques en móvil */
         }
+        
         .container {
-            background: white;
+            background-color: white;
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            z-index: 10;
             width: 90%;
             max-width: 400px;
+            position: relative;
+            z-index: 100; /* Asegura que el cuadro esté arriba */
         }
-        h1 { color: #ff3399; font-size: 24px; }
+        
+        h1 { color: #ff3399; font-size: 24px; margin-bottom: 10px; }
+        p { color: #cc0066; margin-bottom: 20px; }
+        
         .btns {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
+            gap: 15px;
             align-items: center;
         }
+        
         button {
             padding: 15px 25px;
             font-size: 18px;
@@ -40,19 +51,24 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
+            position: relative;
+            z-index: 200; /* Botones siempre clickeables */
         }
+        
         #yesBtn { background-color: #4CAF50; color: white; }
-        #noBtn { background-color: #ff3333; color: white; z-index: 1000; }
-        #response { display: none; margin-top: 20px; }
+        #noBtn { background-color: #ff3333; color: white; }
+        
+        #response { display: none; }
+        
         .heart {
             position: fixed;
             top: -10%;
             color: #ff66b2;
-            font-size: 20px;
-            user-select: none;
-            z-index: 0;
-            animation: fall 4s linear forwards;
+            z-index: 1; /* Corazones al fondo */
+            pointer-events: none; /* ESTO ES CLAVE: Ignora los clics */
+            animation: fall linear forwards;
         }
+        
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); }
         }
@@ -71,9 +87,9 @@
         </div>
         
         <div id="response">
-            <h1 style="font-size: 50px;">😊</h1>
-            <h2>Opaaaaa!</h2>
-            <p>U will not regret MY LOVE. See u at HAM airport!</p>
+            <h1 style="font-size: 60px;">😊</h1>
+            <h2 style="color: #ff3399;">Opaaaaa!</h2>
+            <p>U will not regret MY LOVE.<br>See u at HAM airport!</p>
         </div>
     </div>
 
@@ -83,12 +99,12 @@
         const response = document.getElementById('response');
         const content = document.getElementById('content');
 
-        // Función para los corazones
         function createHeart() {
             const heart = document.createElement('div');
             heart.className = 'heart';
             heart.innerHTML = '❤';
             heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
             heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 4000);
@@ -96,16 +112,15 @@
 
         setInterval(createHeart, 300);
 
-        // Click en SÍ
-        yesBtn.addEventListener('click', () => {
+        yesBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evita interferencias
             content.style.display = 'none';
             response.style.display = 'block';
             for(let i=0; i<30; i++) setTimeout(createHeart, i*50);
         });
 
-        // Click en NO
-        noBtn.addEventListener('click', () => {
-            // El SÍ crece
-            const currentFontSize = parseInt(window.getComputedStyle(yesBtn).fontSize);
-            yesBtn.style.fontSize = (currentFontSize + 10) + 'px';
-            yesBtn.style.
+        noBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            // Crecer SI
+            const currentSize = parseInt(window.getComputedStyle(yesBtn
